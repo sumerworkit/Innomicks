@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Meeting Cost Calculator</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="panel calculator">
+        <div class="topline">
+          <div>
+            <h1>Meeting Cost Calculator</h1>
+            <p>Check the people-time cost before sending the invite.</p>
+          </div>
+          <span id="dbStatus" class="status">Checking DB...</span>
+        </div>
+
+        <form id="meetingForm">
+          <div id="editBanner" class="edit-banner" hidden>
+            <span>Editing saved meeting</span>
+            <button type="button" id="cancelEdit">Cancel edit</button>
+          </div>
+
+          <label>
+            Agenda
+            <input
+              id="agenda"
+              name="agenda"
+              type="text"
+              maxlength="120"
+              placeholder="Decide launch owner and next steps"
+              required
+            />
+          </label>
+
+          <label>
+            Length in minutes
+            <input id="lengthMinutes" name="lengthMinutes" type="number" min="1" value="30" required />
+          </label>
+
+          <div class="section-heading">
+            <h2>People</h2>
+            <button type="button" id="addPerson">Add person</button>
+          </div>
+
+          <div id="peopleList" class="people-list"></div>
+
+          <div class="result">
+            <div>
+              <span>Total cost</span>
+              <strong id="totalCost">$0.00</strong>
+            </div>
+            <div>
+              <span>Recommendation</span>
+              <strong id="verdict">Add details</strong>
+              <p id="recommendation">Enter an agenda and at least one person.</p>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="recalculate">Recalculate</button>
+            <button type="submit" id="submitMeeting">Save meeting</button>
+          </div>
+          <p id="message" class="message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <aside class="panel">
+        <h2>Past Meetings</h2>
+        <div id="history" class="history"></div>
+      </aside>
+
+      <section class="panel build-log">
+        <h2>Build Log</h2>
+        <dl>
+          <dt>What counts as too expensive?</dt>
+          <dd>Over $300 is expensive. $150-$300 needs a clear decision agenda.</dd>
+          <dt>Part-time person handling</dt>
+          <dd>Part-time attendees count as 50% of their hourly cost for meeting cost.</dd>
+          <dt>Currency/timezone</dt>
+          <dd>Currency is USD for simplicity. Timezone does not matter because cost is duration-based.</dd>
+          <dt>Agenda judgement</dt>
+          <dd>Decision and action words score higher. Vague status-sync agendas score lower.</dd>
+          <dt>Parts completed</dt>
+          <dd>Part A cost calculator, Part B recommendation, Part C MongoDB saved meetings.</dd>
+        </dl>
+      </section>
+    </main>
+
+    <template id="personTemplate">
+      <div class="person-row">
+        <input class="person-name" type="text" placeholder="Name" required />
+        <input class="person-cost" type="number" min="0" step="0.01" placeholder="Hourly cost" required />
+        <select class="person-type" aria-label="Employment type">
+          <option value="full-time">Full-time</option>
+          <option value="part-time">Part-time</option>
+        </select>
+        <button type="button" class="remove-person" title="Remove person">Remove</button>
+      </div>
+    </template>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
